@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#6C3FE8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>SpineIQ v2</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div id="toast-coin"></div>
+<div id="confetti-container"></div>
+
+<div class="app-shell">
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="brand-row">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 3c-3 0-5 2.5-5 5.5 0 2 1 3.5 2 5L12 22l3-8.5c1-1.5 2-3 2-5C17 5.5 15 3 12 3z"/><circle cx="12" cy="8.5" r="1.5" fill="#fff" stroke="none"/></svg>
+      </div>
+      <div>
+        <div class="brand-name">SpineIQ</div>
+        <div class="brand-tagline">Spine Health Quest</div>
+      </div>
+    </div>
+    <div class="coin-display" id="header-coins">
+      <span class="coin-icon">🪙</span>
+      <span class="coin-count" id="coin-count">0</span>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="app-content" id="app-content">
+
+    <!-- ASSESSMENT SCREEN -->
+    <div id="screen-assess" class="screen active">
+      <div class="step-progress-wrap" id="step-progress-wrap">
+        <div class="step-progress-inner">
+          <div class="step-progress-top">
+            <span class="step-name" id="step-name">Patient Info</span>
+            <span class="step-xp" id="step-xp">+10 🪙</span>
+          </div>
+          <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:11%"></div></div>
+          <div class="step-dots-row" id="step-dots"></div>
+        </div>
+      </div>
+      <div class="step-body" id="main"></div>
+      <div class="step-actions" id="step-actions"></div>
+    </div>
+
+    <!-- REPORT SCREEN -->
+    <div id="screen-report" class="screen"></div>
+
+    <!-- ACHIEVEMENTS SCREEN -->
+    <div id="screen-achievements" class="screen">
+      <div class="ach-body" id="ach-body"></div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM TAB BAR -->
+  <nav class="tab-bar">
+    <button class="tab active" id="tab-assess" onclick="switchTab('assess')">
+      <div class="tab-icon-wrap">
+        <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
+      </div>
+      <span>Quest</span>
+    </button>
+    <button class="tab" id="tab-report" onclick="switchTab('report')">
+      <div class="tab-icon-wrap">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <div class="tab-dot" id="tab-report-dot"></div>
+      </div>
+      <span>Report</span>
+    </button>
+    <button class="tab" id="tab-achievements" onclick="switchTab('achievements')">
+      <div class="tab-icon-wrap">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        <div class="tab-dot" id="tab-ach-dot"></div>
+      </div>
+      <span>Rewards</span>
+    </button>
+  </nav>
+
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/scoring.js"></script>
+<script src="js/gamification.js"></script>
+<script src="js/pages.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
