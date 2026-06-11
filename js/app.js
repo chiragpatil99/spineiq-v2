@@ -23,7 +23,31 @@ function switchTab(tab) {
     document.getElementById('tab-'+t)?.classList.toggle('active', t===tab);
   });
   document.getElementById('step-actions').style.display = tab==='assess' ? 'flex' : 'none';
-  if (tab==='achievements') renderAchievements();
+  if (tab==='achievements') {
+    renderAchievements();
+    // Load leaderboard rank async
+    setTimeout(async () => {
+      const rankEl = document.getElementById('rank-content');
+      if (!rankEl) return;
+      if (G.stepsCompleted.length === 0) {
+        rankEl.innerHTML = '<span style="color:var(--text3)">Complete the assessment to get ranked</span>';
+        return;
+      }
+      const rank = await getMyRank();
+      if (rank) {
+        rankEl.innerHTML = `
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="font-size:42px;font-weight:900;color:var(--purple);line-height:1">#${rank.rank}</div>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--text)">Your position</div>
+              <div style="font-size:12px;color:var(--text3)">Out of ${rank.total} users · 🪙 ${rank.coins} coins</div>
+            </div>
+          </div>`;
+      } else {
+        rankEl.innerHTML = '<span style="color:var(--text3)">Complete the full assessment to join the leaderboard</span>';
+      }
+    }, 300);
+  }
   if (tab==='report' && G.stepsCompleted.length < TOTAL_STEPS) {
     const reportEl = document.getElementById('screen-report');
     if (reportEl && !reportEl.querySelector('.report-screen-body')) {
@@ -224,6 +248,26 @@ function buildReport() {
       </div>`).join('')}
     </div>` : ''}
 
+    <!-- COMPARISON MODE UNLOCK -->
+    <div style="background:linear-gradient(135deg,var(--purple-dim),var(--surface));border:1.5px solid var(--purple)33;border-radius:var(--r2);padding:16px;margin-bottom:4px;box-shadow:var(--shadow)" id="comparison-section">
+      ${G.coins >= 40 || G.unlockedComparison ? `
+      <div style="font-size:10px;font-weight:700;color:var(--purple);letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px">📊 Comparison Mode — Unlocked</div>
+      <div id="comparison-content"></div>` : `
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="font-size:32px">📊</div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:3px">Comparison Mode</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.4">See how your scores compare to the average for your age group and gender</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+        <div style="font-size:13px;color:var(--text2)">Current coins: <strong style="color:var(--coin)">🪙 ${G.coins}</strong></div>
+        <button onclick="unlockComparison()" style="padding:9px 18px;border-radius:var(--r3);background:${G.coins>=40?'var(--purple)':'var(--text3)'};border:none;color:#fff;font-size:13px;font-weight:700;cursor:${G.coins>=40?'pointer':'not-allowed'};font-family:inherit">
+          ${G.coins>=40?'Unlock for 🪙 40':'Need 🪙 40'}
+        </button>
+      </div>`}
+    </div>
+
     <div class="sec-lbl">Probable contributors</div>
     <div class="contrib-card">
       ${contribs.map(([t,c])=>`
@@ -240,6 +284,26 @@ function buildReport() {
     <div id="rout"></div>
     <div id="download-wrap"></div>
   </div>`;
+}
+
+// ── UNLOCK COMPARISON ────────────────────────────────────────────
+function unlockComparison() {
+  if (G.coins < 40) { showToast('Not enough coins! Need 🪙 40'); return; }
+  G.coins -= 40;
+  G.unlockedComparison = true;
+  updateCoinDisplay();
+  showCoinToast('📊 Comparison Mode unlocked!');
+  launchConfetti();
+  // Re-render comparison section
+  const section = document.getElementById('comparison-section');
+  if (section) {
+    section.innerHTML = `
+      <div style="font-size:10px;font-weight:700;color:var(--purple);letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px">📊 Comparison Mode — Unlocked</div>
+      <div id="comparison-content"></div>`;
+    if (typeof renderComparisonMode === 'function') {
+      renderComparisonMode(document.getElementById('comparison-content'));
+    }
+  }
 }
 
 // ── AI REPORT ─────────────────────────────────────────────────────
@@ -264,6 +328,10 @@ async function genReport() {
     G.badges.push('report_generated');
     checkBadges();
     awardCoins(25,'Report generated!');
+    // Submit to leaderboard
+    if (typeof submitToLeaderboard === 'function') {
+      submitToLeaderboard(G.coins, sc.risk, G.stepsCompleted.length);
+    }
     const wrap=document.getElementById('download-wrap');
     if (wrap) wrap.innerHTML=`<button class="dl-btn" onclick="downloadReport()">⬇ Download Report as PDF</button>`;
   } catch(err) {
@@ -347,6 +415,9 @@ function showToast(msg) {
 setTimeout(() => {
   fetch(API_PROXY_URL.replace('/api/generate-report',''), {method:'GET'}).catch(()=>{});
 }, 2000);
+
+// ── INIT STREAK ───────────────────────────────────────────────────
+setTimeout(() => { if (typeof initStreak === 'function') initStreak(); }, 500);
 
 // ── INIT ──────────────────────────────────────────────────────────
 // Show onboarding on first load
