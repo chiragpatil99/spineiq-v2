@@ -352,7 +352,7 @@ async function genReport() {
     clearTimeout(t);
     const data=await res.json();
     if (!res.ok) throw new Error(data.error||'Server error');
-    out.innerHTML=`<div class="report-box">${data.report}</div>`;
+    out.innerHTML=`<div class="report-rendered">${mdToHtml(data.report)}</div>`;
     // Award badge
     G.badges.push('report_generated');
     checkBadges();
