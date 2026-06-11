@@ -306,6 +306,35 @@ function unlockComparison() {
   }
 }
 
+// ── MARKDOWN RENDERER ────────────────────────────────────────────
+function mdToHtml(text) {
+  var h = text;
+  var lines = h.split('\n');
+  var result = [];
+  var i = 0;
+  while (i < lines.length) {
+    var line = lines[i].trim();
+    // Section header: ## 1. TITLE
+    if (line.match(/^## \d+\./)) {
+      var parts = line.replace(/^## (\d+)\. (.+)$/, '$1|$2').split('|');
+      result.push('<div class="rep-sec-hdr"><span class="rep-sec-num">' + (parts[0]||'') + '</span><span class="rep-sec-title">' + (parts[1]||'') + '</span></div>');
+      i++; continue;
+    }
+    // Horizontal rule
+    if (line.match(/^---+$/)) {
+      result.push('<div class="rep-divider"></div>');
+      i++; continue;
+    }
+    // Empty line — skip
+    if (!line) { i++; continue; }
+    // Regular paragraph line — bold inline
+    var formatted = line.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    result.push('<p class="rep-p">' + formatted + '</p>');
+    i++;
+  }
+  return result.join('');
+}
+
 // ── AI REPORT ─────────────────────────────────────────────────────
 async function genReport() {
   const btn = document.getElementById('gbtn');
