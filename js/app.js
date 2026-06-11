@@ -24,6 +24,24 @@ function switchTab(tab) {
   });
   document.getElementById('step-actions').style.display = tab==='assess' ? 'flex' : 'none';
   if (tab==='achievements') renderAchievements();
+  if (tab==='report' && G.stepsCompleted.length < TOTAL_STEPS) {
+    const reportEl = document.getElementById('screen-report');
+    if (reportEl && !reportEl.querySelector('.report-screen-body')) {
+      reportEl.innerHTML = `
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;padding:32px;text-align:center;gap:12px">
+          <div style="font-size:56px">📋</div>
+          <div style="font-size:20px;font-weight:800;color:var(--text)">Report not ready yet</div>
+          <div style="font-size:14px;color:var(--text2);line-height:1.5">Complete all 9 steps of the assessment to generate your personalised AI clinical report.</div>
+          <div style="background:var(--purple-dim);border:1.5px solid var(--purple)33;border-radius:var(--r2);padding:14px 20px;margin-top:8px">
+            <div style="font-size:13px;font-weight:700;color:var(--purple)">${G.stepsCompleted.length}/9 steps completed</div>
+            <div style="font-size:12px;color:var(--text3);margin-top:3px">${TOTAL_STEPS - G.stepsCompleted.length} steps remaining</div>
+          </div>
+          <button onclick="switchTab('assess')" style="margin-top:8px;padding:13px 28px;border-radius:var(--r3);background:var(--purple);border:none;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">
+            Continue Quest →
+          </button>
+        </div>`;
+    }
+  }
   document.getElementById('app-content').scrollTo(0,0);
 }
 
@@ -325,6 +343,62 @@ function showToast(msg) {
   setTimeout(()=>el.style.display='none',2500);
 }
 
+// ── KEEP RENDER WARM ─────────────────────────────────────────────
+setTimeout(() => {
+  fetch(API_PROXY_URL.replace('/api/generate-report',''), {method:'GET'}).catch(()=>{});
+}, 2000);
+
 // ── INIT ──────────────────────────────────────────────────────────
-render();
-switchTab('assess');
+// Show onboarding on first load
+if (!sessionStorage.getItem('spineiq_v2_welcomed')) {
+  showOnboarding();
+} else {
+  render();
+  switchTab('assess');
+}
+
+function showOnboarding() {
+  const overlay = document.createElement('div');
+  overlay.id = 'onboarding-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#6C3FE8 0%,#3B1FA0 60%,#0D1E40 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;gap:0';
+  overlay.innerHTML = `
+    <div style="font-size:64px;margin-bottom:16px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.3))">🦴</div>
+    <div style="font-family:-apple-system,BlinkMacSystemFont,Inter,sans-serif;font-size:30px;font-weight:900;color:#fff;letter-spacing:-.5px;margin-bottom:6px">SpineIQ</div>
+    <div style="font-size:14px;color:rgba(255,255,255,.6);font-weight:500;margin-bottom:32px;font-family:inherit">Spine Health Quest</div>
+
+    <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:24px;margin-bottom:28px;width:100%;max-width:320px">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        ${[['🎯','9-step spine health assessment','Evidence-based, clinically validated'],
+           ['🪙','Earn coins on every step','Complete the quest, unlock badges'],
+           ['📋','Get your AI clinical report','Understand the root cause of your pain']
+          ].map(([ic,title,sub])=>`
+        <div style="display:flex;align-items:center;gap:14px;text-align:left">
+          <div style="font-size:28px;flex-shrink:0">${ic}</div>
+          <div>
+            <div style="font-size:14px;font-weight:700;color:#fff;font-family:-apple-system,sans-serif">${title}</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:2px;font-family:inherit">${sub}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:20px;font-family:inherit">Takes about 5 minutes · No login required</div>
+
+    <button onclick="startQuest()" style="width:100%;max-width:320px;padding:16px;border-radius:16px;border:none;background:linear-gradient(135deg,#FFB800,#FF7700);color:#fff;font-size:16px;font-weight:900;cursor:pointer;font-family:-apple-system,sans-serif;box-shadow:0 6px 24px rgba(255,184,0,.4);letter-spacing:-.2px">
+      🚀 Start My Quest
+    </button>
+    <div style="margin-top:12px;font-size:11px;color:rgba(255,255,255,.3);font-family:inherit">SpineIQ v2 · Phase 1 Prototype</div>
+  `;
+  document.body.appendChild(overlay);
+}
+
+function startQuest() {
+  sessionStorage.setItem('spineiq_v2_welcomed', '1');
+  const overlay = document.getElementById('onboarding-overlay');
+  if (overlay) {
+    overlay.style.transition = 'opacity .4s,transform .4s';
+    overlay.style.opacity = '0';
+    overlay.style.transform = 'scale(1.05)';
+    setTimeout(() => { overlay.remove(); render(); switchTab('assess'); }, 400);
+  }
+}
