@@ -201,7 +201,7 @@ function showNotifications() {
             style="opacity:0;width:0;height:0;position:absolute"
             ${localStorage.getItem('spineiq_theme')==='light'?'checked':''}>
           <span style="position:absolute;inset:0;background:var(--border2);border-radius:13px;transition:.3s;display:block"></span>
-          <span style="position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:.3s;display:block;transform:${localStorage.getItem('spineiq_theme')==='light'?'translateX(22px)':'translateX(0)'}"></span>
+          <span style="position:absolute;top:3px;left:3px;width:20px;height:20px;background:var(--surface);border-radius:50%;transition:.3s;display:block;transform:${localStorage.getItem('spineiq_theme')==='light'?'translateX(22px)':'translateX(0)'}"></span>
         </label>
       </div>
       <button onclick="this.closest('[style]').remove()" style="width:100%;margin-top:8px;padding:13px;border-radius:var(--r);background:var(--surface2);border:1.5px solid var(--border);color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Close</button>
