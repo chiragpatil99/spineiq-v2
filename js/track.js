@@ -195,7 +195,7 @@ function showExercise() {
     +'</svg></div>'
     +'<div style="display:flex;gap:12px;margin-top:8px">'
     +'<button onclick="skipExercise()" style="padding:12px 24px;border-radius:20px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Skip</button>'
-    +'<button id="pause-btn" onclick="togglePause()" style="padding:12px 24px;border-radius:20px;background:#fff;border:none;color:var(--purple);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Pause</button>'
+    +'<button id="pause-btn" onclick="togglePause()" style="padding:12px 24px;border-radius:20px;background:var(--surface);border:none;color:var(--purple);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Pause</button>'
     +'</div>';
   document.body.appendChild(overlay);
   runTimer(ex.duration);
@@ -256,6 +256,6 @@ function finishRoutine() {
     +'<div style="font-size:14px;color:rgba(255,255,255,.7)">5 exercises · ~8 minutes</div>'
     +'<div style="background:rgba(255,215,0,.2);border:1px solid rgba(255,215,0,.4);border-radius:20px;padding:12px 24px;margin-top:8px">'
     +'<span style="font-size:28px;font-weight:900;color:#FFD700">+30 🪙</span></div>'
-    +'<button onclick="this.closest(\'[style]\').remove();renderTrack()" style="margin-top:16px;padding:14px 40px;border-radius:var(--r3);background:#fff;border:none;color:var(--purple);font-size:15px;font-weight:800;cursor:pointer;font-family:inherit">Done ✓</button>';
+    +'<button onclick="this.closest(\'[style]\').remove();renderTrack()" style="margin-top:16px;padding:14px 40px;border-radius:var(--r3);background:var(--surface);border:none;color:var(--purple);font-size:15px;font-weight:800;cursor:pointer;font-family:inherit">Done ✓</button>';
   document.body.appendChild(overlay);
 }
