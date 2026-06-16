@@ -323,6 +323,37 @@ function downloadReport() {
   if(w){w.document.write(html);w.document.close();}
 }
 
+
+// ── THEME TOGGLE ─────────────────────────────────────────────────
+function initTheme() {
+  var saved = localStorage.getItem('spineiq_theme');
+  if (saved) {
+    applyTheme(saved);
+  } else {
+    // Auto-detect system preference
+    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(prefersDark ? 'dark' : 'light');
+  }
+}
+
+function applyTheme(theme) {
+  document.body.classList.remove('theme-light', 'theme-dark');
+  document.body.classList.add('theme-' + theme);
+  localStorage.setItem('spineiq_theme', theme);
+  // Update toggle knob and label if visible
+  var toggle = document.getElementById('theme-toggle');
+  if (toggle) toggle.checked = theme === 'light';
+  var knob = document.getElementById('toggle-knob');
+  if (knob) knob.style.transform = theme === 'light' ? 'translateX(22px)' : 'translateX(0)';
+  var label = document.getElementById('theme-label');
+  if (label) label.textContent = theme === 'light' ? 'Light mode' : 'Dark mode';
+}
+
+function toggleTheme() {
+  var current = localStorage.getItem('spineiq_theme') || 'dark';
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+}
+
 // ── KEEP RENDER WARM ──────────────────────────────────────────────
 setTimeout(function(){
   fetch(API_PROXY_URL.replace('/api/generate-report',''),{method:'GET'}).catch(function(){});
@@ -330,6 +361,9 @@ setTimeout(function(){
 
 // ── INIT STREAK ───────────────────────────────────────────────────
 setTimeout(function(){ if(typeof initStreak==='function') initStreak(); },500);
+
+// Init theme on load
+initTheme();
 
 // ── ONBOARDING ────────────────────────────────────────────────────
 if (!sessionStorage.getItem('spineiq_v2_welcomed')) {
