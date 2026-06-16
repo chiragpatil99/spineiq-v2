@@ -296,7 +296,7 @@ function downloadReport() {
   var sc=score(),sss=calcSSS();
   var rCol=sc.risk<35?'#1DB87A':sc.risk<65?'#FF9900':'#F04060';
   var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>SpineIQ Report</title>'
-    +'<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#fff;color:#1a1a1a}'
+    +'<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:var(--surface);color:var(--text)}'
     +'.page{max-width:780px;margin:0 auto;padding:32px 36px}'
     +'.hdr{display:flex;justify-content:space-between;margin-bottom:28px;padding-bottom:20px;border-bottom:3px solid #6C3FE8}'
     +'.brand{font-size:26px;font-weight:900;color:#6C3FE8}.sec{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#888;margin:24px 0 10px}'
@@ -306,7 +306,7 @@ function downloadReport() {
     +'.risk{border-radius:12px;padding:18px 22px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;background:'+(sc.risk<35?'#e0faf1':sc.risk<65?'#fff4e0':'#ffeaee')+';border:1px solid '+rCol+'44}'
     +'.rn{font-size:46px;font-weight:900;color:'+rCol+';line-height:1}'
     +'.rb{background:'+rCol+';color:#fff;padding:8px 20px;border-radius:20px;font-weight:900;font-size:14px}'
-    +'.rb2{font-size:13.5px;line-height:1.9;color:#2a2a2a;white-space:pre-wrap;margin-top:8px}'
+    +'.rb2{font-size:13.5px;line-height:1.9;color:var(--text);white-space:pre-wrap;margin-top:8px}'
     +'.ft{margin-top:36px;padding-top:14px;border-top:1px solid #eee;font-size:11px;color:#aaa;text-align:center}'
     +'@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body><div class="page">'
     +'<div class="hdr"><div><div class="brand">SpineIQ</div><div style="font-size:12px;color:#888">Spine Health Intelligence Platform v2</div></div>'
