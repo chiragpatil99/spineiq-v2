@@ -187,7 +187,24 @@ function showNotifications() {
         <div style="font-size:22px">${ic}</div>
         <div><div style="font-size:14px;font-weight:700;color:var(--text)">${t}</div><div style="font-size:12px;color:var(--text2)">${s}</div></div>
       </div>`).join('')}
-      <button onclick="this.closest('[style]').remove()" style="width:100%;margin-top:16px;padding:13px;border-radius:var(--r);background:var(--surface2);border:1.5px solid var(--border);color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Close</button>
+      <!-- THEME TOGGLE -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-top:1px solid var(--border);margin-top:8px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:20px">🌓</span>
+          <div>
+            <div style="font-size:14px;font-weight:700;color:var(--text)" id="theme-label">Light mode</div>
+            <div style="font-size:11px;color:var(--text3)">Switch appearance</div>
+          </div>
+        </div>
+        <label style="position:relative;display:inline-block;width:48px;height:26px;cursor:pointer">
+          <input type="checkbox" id="theme-toggle" onchange="toggleTheme()"
+            style="opacity:0;width:0;height:0;position:absolute"
+            ${localStorage.getItem('spineiq_theme')==='light'?'checked':''}>
+          <span style="position:absolute;inset:0;background:var(--border2);border-radius:13px;transition:.3s;display:block"></span>
+          <span style="position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:.3s;display:block;transform:${localStorage.getItem('spineiq_theme')==='light'?'translateX(22px)':'translateX(0)'}"></span>
+        </label>
+      </div>
+      <button onclick="this.closest('[style]').remove()" style="width:100%;margin-top:8px;padding:13px;border-radius:var(--r);background:var(--surface2);border:1.5px solid var(--border);color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Close</button>
     </div>`;
   document.body.appendChild(overlay);
   overlay.addEventListener('click', function(e) { if (e.target===overlay) overlay.remove(); });
