@@ -457,7 +457,94 @@ body.theme-light {
   --text:#1A1535;--text2:#6B6490;--text3:#A09DC0;
 }
 body.theme-dark {
-  --bg:#0C0F1C;--bg2:#111624;--bg3:#171D2E;--bg4:#1E2538;
-  --border:#2A3250;--border2:#354060;
-  --text:#EEF2FF;--text2:#8B95B8;--text3:#56607A;
+  --bg:#12101E;
+  --bg2:#1C1830;
+  --bg3:#241F3A;
+  --bg4:#2E2848;
+  --surface:#1C1830;
+  --surface2:#241F3A;
+  --border:#3A3358;
+  --border2:#4A4470;
+  --text:#F0EEFF;
+  --text2:#A098CC;
+  --text3:#6A6290;
+  --purple:#8B7CF6;
+  --purple2:#A395FF;
+  --purple-dim:#2A2250;
+  --teal:#00D4B4;
+  --teal-dim:#0A3530;
+  --amber:#FFB020;
+  --amber-dim:#3A2800;
+  --red:#FF5570;
+  --red-dim:#3A0E18;
+  --green:#30D878;
+  --green-dim:#0A2E1A;
+  --blue:#5BA8FF;
+  --blue-dim:#0A1E3A;
+  --coin:#FFB800;
+  --coin-dim:#2E2000;
+  --shadow:0 2px 16px rgba(0,0,0,.4);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.5);
+}
+
+/* Force dark mode on all elements */
+body.theme-dark .card,
+body.theme-dark .step-hero,
+body.theme-dark .progress-shield,
+body.theme-dark .bm-body-wrap,
+body.theme-dark .body-map-wrap,
+body.theme-dark .vid-form-wrap {
+  background: var(--bg2) !important;
+  border-color: var(--border) !important;
+}
+
+body.theme-dark input[type=text],
+body.theme-dark input[type=number],
+body.theme-dark select,
+body.theme-dark textarea {
+  background: var(--bg3) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+body.theme-dark .option-pill {
+  background: var(--bg3) !important;
+  border-color: var(--border) !important;
+  color: var(--text2) !important;
+}
+
+body.theme-dark .tbtn {
+  background: var(--bg3) !important;
+  border-color: var(--border2) !important;
+  color: var(--text2) !important;
+}
+
+body.theme-dark .bmi-badge {
+  background: var(--bg3) !important;
+  border-color: var(--border) !important;
+}
+
+/* Fix inline white backgrounds in dynamically rendered content */
+body.theme-dark [style*="background:#fff"],
+body.theme-dark [style*="background: #fff"],
+body.theme-dark [style*="background:white"],
+body.theme-dark [style*="background:#FFFFFF"] {
+  background: var(--bg2) !important;
+}
+
+body.theme-dark [style*="background:var(--surface)"],
+body.theme-dark [style*="background: var(--surface)"] {
+  background: var(--bg2) !important;
+}
+
+body.theme-dark [style*="color:#1a1a1a"],
+body.theme-dark [style*="color:#2a2a2a"],
+body.theme-dark [style*="color:#1A1535"] {
+  color: var(--text) !important;
+}
+
+body.theme-dark [style*="border-color:#eee"],
+body.theme-dark [style*="border:1px solid #eee"],
+body.theme-dark [style*="border-bottom:1px solid #eee"] {
+  border-color: var(--border) !important;
 }
