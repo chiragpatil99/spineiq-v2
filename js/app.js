@@ -365,8 +365,10 @@ setTimeout(function(){ if(typeof initStreak==='function') initStreak(); },500);
 // Init theme on load
 initTheme();
 
-// ── ONBOARDING ────────────────────────────────────────────────────
-if (!sessionStorage.getItem('spineiq_v2_welcomed')) {
+// ── AUTH CHECK ────────────────────────────────────────────────────
+if (typeof authInit === 'function' && !authInit()) {
+  showLoginScreen();
+} else if (!sessionStorage.getItem('spineiq_v2_welcomed')) {
   showOnboarding();
 } else {
   renderHome();
