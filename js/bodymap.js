@@ -102,7 +102,7 @@ function renderBodyMapHtml() {
           var isSel = D.pa.loc === z;
           return '<div class="bm-zone-lbl '+(isSel?'bm-zone-lbl-active':'')+'" onclick="selectBodyZone(\''+z+'\')" style="'+(isSel?'color:'+ZONE_MAP[z].color:'')+';">'
             + '<span class="bm-zone-indicator" style="background:'+(isSel?ZONE_MAP[z].color:'var(--border2)')+'"></span>'
-            + ZONE_MAP[z].label.split(' ')[0]+'<br><span style="font-size:10px;opacity:.7">'+ZONE_MAP[z].label.split('/')[1]||''+'</span>'
+            + ({cervical:'Cervical',thoracic:'Thoracic',lumbar:'Lumbar',sacral:'Sacral'}[z]||z)
             + '</div>';
         }).join('')
       + '</div>'
