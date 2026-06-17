@@ -205,6 +205,7 @@ function showNotifications() {
         </label>
       </div>
       <button onclick="this.closest('[style]').remove()" style="width:100%;margin-top:8px;padding:13px;border-radius:var(--r);background:var(--surface2);border:1.5px solid var(--border);color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Close</button>
+      <button onclick="if(confirm('Sign out of SpineIQ?')){this.closest('[style]').remove();if(typeof authLogout==='function')authLogout();}" style="width:100%;margin-top:8px;padding:13px;border-radius:var(--r);background:var(--red-dim);border:1.5px solid var(--red)33;color:var(--red);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">← Sign out</button>
     </div>`;
   document.body.appendChild(overlay);
   overlay.addEventListener('click', function(e) { if (e.target===overlay) overlay.remove(); });
