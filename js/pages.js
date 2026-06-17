@@ -241,39 +241,7 @@ const PAGES = [
   </div>
   <div class="card">
     <div class="card-label">Pain location & intensity</div>
-    <div class="field"><label>Tap where it hurts</label>
-    <div class="body-map-wrap">
-      <div class="body-map-inner">
-        <svg class="body-svg" viewBox="0 0 160 300" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="80" cy="22" rx="16" ry="18" class="body-part"/>
-          <rect x="74" y="38" width="12" height="12" rx="3" class="body-part"/>
-          <path d="M52 50 Q50 75 48 105 Q47 125 50 148 L110 148 Q113 125 112 105 Q110 75 108 50 Z" class="body-part"/>
-          <ellipse cx="46" cy="58" rx="10" ry="8" class="body-part"/>
-          <ellipse cx="114" cy="58" rx="10" ry="8" class="body-part"/>
-          <path d="M38 58 Q28 80 26 110 Q24 125 28 138 Q33 142 38 138 Q43 125 43 110 Q44 88 48 68 Z" class="body-part"/>
-          <path d="M122 58 Q132 80 134 110 Q136 125 132 138 Q127 142 122 138 Q117 125 117 110 Q116 88 112 68 Z" class="body-part"/>
-          <path d="M50 148 Q46 156 48 170 L112 170 Q114 156 110 148 Z" class="body-part"/>
-          <path d="M50 168 Q47 190 46 218 Q44 232 47 244 Q52 248 57 244 Q62 232 62 218 Q63 192 64 168 Z" class="body-part"/>
-          <path d="M96 168 Q97 190 98 218 Q100 232 103 244 Q108 248 113 244 Q116 232 114 218 Q112 190 110 168 Z" class="body-part"/>
-          <ellipse cx="52" cy="254" rx="10" ry="6" class="body-part"/>
-          <ellipse cx="108" cy="254" rx="10" ry="6" class="body-part"/>
-          <line x1="80" y1="50" x2="80" y2="148" stroke="var(--border)" stroke-width="0.8" stroke-dasharray="2 2"/>
-          ${[62,72,82,92,102,112,122,132].map((y,i) => '<circle cx="80" cy="'+y+'" r="2.5" fill="var(--border2)"/>').join('')}
-          ${renderBodyZones()}
-        </svg>
-        <div class="body-zone-labels">
-          <div class="bzl" style="top:18%">Cervical</div>
-          <div class="bzl" style="top:35%">Thoracic</div>
-          <div class="bzl" style="top:52%">Lumbar</div>
-          <div class="bzl" style="top:64%">Sacral</div>
-        </div>
-      </div>
-      ${D.pa.loc ? `<div class="body-sel-chip">
-        <div class="bsc-dot" style="background:${zoneColor(D.pa.loc)}"></div>
-        <span>${zoneLabel(D.pa.loc)}</span>
-        <button onclick="D.pa.loc='';render()" style="background:transparent;border:none;cursor:pointer;color:var(--text3);font-size:16px;padding:0 0 0 4px">×</button>
-      </div>` : '<div class="body-tap-hint">👆 Tap a region on the body</div>'}
-    </div></div>
+    <div class="field">${renderBodyMapHtml()}</div>
     <div class="field"><label>Pain intensity (0–10)</label>
     <div class="pain-scale">
       ${Array.from({length:11},(_,i)=>{
@@ -290,11 +258,7 @@ const PAGES = [
         <option value="chronic" ${D.pa.duration==='chronic'?'selected':''}>Chronic &gt;3 months</option>
         <option value="recurrent" ${D.pa.duration==='recurrent'?'selected':''}>Recurrent</option>
       </select></div>
-      <div class="field"><label>Radiation</label>
-      <div class="tgroup" style="flex-wrap:wrap">
-        ${[['no','None'],['buttock','→ Buttock'],['thigh','→ Thigh'],['leg','→ Leg'],['foot','→ Foot/toes']].map(([v,l])=>
-        `<button class="tbtn ${D.pa.radiation===v?'sel-normal':''}" onclick="D.pa.radiation='${v}';render()">${l}</button>`).join('')}
-      </div></div>
+
     </div>
     <div class="field"><label>Triggers</label>
     <input type="text" value="${D.pa.triggers}" placeholder="e.g. prolonged sitting, bending" oninput="D.pa.triggers=this.value"></div>
